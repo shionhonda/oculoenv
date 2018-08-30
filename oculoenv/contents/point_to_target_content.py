@@ -28,7 +28,7 @@ class Quadrant(object):
         self.width_bottom = width_bottom
 
     def get_random_location(self, target_width):
-        """ Get random location in this quadrant given target size. 
+        """ Get random location in this quadrant given target size.
         Arguments:
           target_width: Float, half width of the target
         Returns:
@@ -46,11 +46,11 @@ class Quadrant(object):
 
 class PointToTargetContent(BaseContent):
     difficulty_range = 3
-    
+
     def __init__(self, difficulty=None):
         self.difficulty = difficulty
         assert (difficulty is None) or (difficulty < self.difficulty_range)
-        
+
         self.quadrants = []
         # To avoid confilict with plus marker, adding margin
         margin = START_MARKER_WIDTH
@@ -102,14 +102,15 @@ class PointToTargetContent(BaseContent):
 
         if self.difficulty is not None:
             # If task difficulty is explicitly applied, keep specific target and lure sizes
-            # during entire episode. (Otherwise change size 
+            # during entire episode. (Otherwise change size
             self._apply_difficulty(self.difficulty)
-            
-        self.phase = PHASE_START
+
+        self.phase = PHASE_TARGET
+        self._move_to_target_phase()
         self.reaction_step = 0
 
     def _reset(self):
-        self._move_to_start_phase()
+        self._move_to_target_phase()
 
     def _step(self, local_focus_pos):
         reward = 0
@@ -136,7 +137,7 @@ class PointToTargetContent(BaseContent):
                 info['result'] = 'fail'
                 info['reaction_step'] = self.reaction_step
             if reward > 0:
-                self._move_to_start_phase()
+                self._move_to_target_phase()
                 need_render = True
 
         done = self.step_count >= (MAX_STEP_COUNT - 1)
@@ -155,7 +156,7 @@ class PointToTargetContent(BaseContent):
 
     def _apply_difficulty(self, current_difficulty):
         """ Change target and lure size based on the difficulty. """
-            
+
         if current_difficulty == 0:
             # Target is large, lure is small
             self.target_sprite.set_width(TARGET_WIDTH_LARGE)
@@ -179,7 +180,7 @@ class PointToTargetContent(BaseContent):
             # Change target and lure size randomly.
             current_difficulty = np.random.randint(0, self.difficulty_range)
             self._apply_difficulty(current_difficulty)
-        
+
         indices = list(range(4))
         random.shuffle(indices)
 
