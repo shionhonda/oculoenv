@@ -105,12 +105,11 @@ class PointToTargetContent(BaseContent):
             # during entire episode. (Otherwise change size
             self._apply_difficulty(self.difficulty)
 
-        self.phase = PHASE_TARGET
-        self._move_to_target_phase()
+        self.phase = PHASE_START
         self.reaction_step = 0
 
     def _reset(self):
-        self._move_to_target_phase()
+        self._move_to_start_phase()
 
     def _step(self, local_focus_pos):
         reward = 0
@@ -137,7 +136,7 @@ class PointToTargetContent(BaseContent):
                 info['result'] = 'fail'
                 info['reaction_step'] = self.reaction_step
             if reward > 0:
-                self._move_to_target_phase()
+                self._move_to_start_phase()
                 need_render = True
 
         done = self.step_count >= (MAX_STEP_COUNT - 1)
