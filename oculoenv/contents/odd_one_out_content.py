@@ -143,7 +143,7 @@ class OddOneOutContent(BaseContent):
         super(OddOneOutContent, self).__init__(bg_color=[0.0, 0.0, 0.0, 1.0])
 
     def _init(self):
-        start_marker_texture = self._load_texture('start_marker0.png')
+        start_marker_texture = self._load_texture('general_plus0.png')
 
         self.start_sprite = ContentSprite(start_marker_texture, 0.0, 0.0,
                                           START_MARKER_WIDTH)
